@@ -3,44 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FitFrame — Track Your Physique. Earn Your Rank.</title>
+  <title>FitFrame — Track. Compete. Transform.</title>
+  <meta name="description" content="Upload a daily photo, get AI-scored, earn XP, and climb global leaderboards. The fitness app that rewards consistency." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,900;1,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #080808;
-      --card:      #0F0F0F;
-      --surface:   #141414;
-      --elevated:  #1A1A1A;
-      --border:    #1E1E1E;
-      --border-hi: #2A2A2A;
+      --bg:      #080808;
+      --card:    #0F0F0F;
+      --surface: #141414;
+      --raised:  #1A1A1A;
+      --border:  #1E1E1E;
+      --line:    #262626;
 
-      --orange:    #F97316;
-      --orange-lo: rgba(249,115,22,0.08);
-      --gold:      #EF9F27;
-      --green:     #22C55E;
-      --red:       #EF4444;
-      --blue:      #60A5FA;
-      --purple:    #8B5CF6;
+      --orange:  #F97316;
+      --gold:    #EF9F27;
+      --green:   #22C55E;
+      --red:     #EF4444;
 
-      --text:      #F0F0F0;
-      --muted:     #5A5A5A;
-      --subtle:    #2E2E2E;
+      --text:    #F0F0F0;
+      --muted:   #606060;
+      --dim:     #3A3A3A;
 
-      --bronze:   #D85A30;
-      --silver:   #B4B2A9;
-      --gold-t:   #EF9F27;
-      --platinum: #D4D0C8;
-      --diamond:  #89D4F5;
-      --elite:    #8B5CF6;
-      --champion: #E86BF5;
-      --olympian: #FFE566;
-
-      --font-display: 'Barlow Condensed', sans-serif;
-      --font-body:    'Inter', sans-serif;
+      --font-d: 'Barlow Condensed', sans-serif;
+      --font-b: 'Inter', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
@@ -48,1101 +37,630 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: var(--font-body);
+      font-family: var(--font-b);
       font-size: 16px;
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    /* ─── GRAIN OVERLAY ─── */
-    body::before {
+    /* grain */
+    body::after {
       content: '';
       position: fixed;
       inset: 0;
-      z-index: 0;
+      z-index: 9999;
       pointer-events: none;
-      opacity: 0.025;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      background-size: 128px;
+      opacity: 0.018;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 160px;
     }
-
-    * { position: relative; z-index: 1; }
 
     /* ─── NAV ─── */
     nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
+      inset: 0 0 auto;
+      z-index: 100;
+      height: 58px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 48px;
-      height: 60px;
-      background: rgba(8,8,8,0.9);
-      backdrop-filter: blur(24px) saturate(180%);
+      padding: 0 40px;
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(20px) saturate(160%);
       border-bottom: 1px solid var(--border);
     }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
+    .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
     .logo-mark {
-      width: 32px; height: 32px;
+      width: 30px; height: 30px;
       background: var(--orange);
       border-radius: 7px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-display);
+      display: grid; place-items: center;
+      font-family: var(--font-d);
       font-weight: 900;
-      font-size: 15px;
+      font-size: 14px;
       color: #fff;
-      flex-shrink: 0;
     }
-    .logo-text {
-      font-family: var(--font-display);
+    .logo-name {
+      font-family: var(--font-d);
       font-weight: 900;
-      font-size: 20px;
-      letter-spacing: 0.5px;
+      font-size: 19px;
       color: var(--text);
+      letter-spacing: 0.3px;
     }
-    .nav-center {
+    .nav-links {
       display: flex;
-      gap: 2px;
+      gap: 28px;
     }
-    .nav-link {
+    .nav-links a {
       font-size: 13px;
       font-weight: 500;
       color: var(--muted);
       text-decoration: none;
-      padding: 6px 14px;
-      border-radius: 6px;
-      transition: color 0.15s, background 0.15s;
+      transition: color .15s;
     }
-    .nav-link:hover { color: var(--text); background: var(--surface); }
-    .nav-right { display: flex; align-items: center; gap: 10px; }
-    .btn-ghost {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 7px 16px;
-      border-radius: 7px;
-      border: 1px solid var(--border);
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .btn-ghost:hover { color: var(--text); border-color: var(--border-hi); }
-    .btn-nav {
+    .nav-links a:hover { color: var(--text); }
+    .nav-dl {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--orange);
+      color: #fff;
       font-size: 13px;
       font-weight: 700;
-      color: #fff;
+      padding: 8px 18px;
+      border-radius: 8px;
       text-decoration: none;
-      padding: 7px 18px;
-      border-radius: 7px;
-      background: var(--orange);
-      transition: opacity 0.15s;
+      transition: opacity .15s;
     }
-    .btn-nav:hover { opacity: 0.85; }
+    .nav-dl:hover { opacity: .85; }
 
     /* ─── HERO ─── */
     .hero {
       min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 120px 48px 80px;
-      gap: 48px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    .hero-left {}
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 28px;
-    }
-    .hero-tag::before {
-      content: '';
-      display: block;
-      width: 20px;
-      height: 2px;
-      background: var(--orange);
-    }
-    .hero-h1 {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(68px, 7.5vw, 108px);
-      line-height: 0.9;
-      letter-spacing: -1px;
-      margin-bottom: 32px;
-    }
-    .hero-h1 .line2 { color: var(--orange); display: block; }
-    .hero-sub {
-      font-size: 17px;
-      color: var(--muted);
-      line-height: 1.65;
-      max-width: 400px;
-      margin-bottom: 44px;
-    }
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 56px;
-    }
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--orange);
-      color: #fff;
-      font-size: 15px;
-      font-weight: 700;
-      text-decoration: none;
-      padding: 14px 28px;
-      border-radius: 10px;
-      transition: opacity 0.15s, transform 0.15s;
-    }
-    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-    .btn-plain {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    .btn-plain:hover { color: var(--text); }
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-    .hero-stat {
-      background: var(--card);
-      padding: 18px 20px;
-    }
-    .hero-stat-num {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 30px;
-      color: var(--text);
-      line-height: 1;
-      display: block;
-      margin-bottom: 4px;
-    }
-    .hero-stat-label {
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    /* Hero right — big score visual */
-    .hero-right {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 24px 60px;
+      position: relative;
+      overflow: hidden;
     }
-    .score-card {
+    .hero-glow {
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 600px;
+      background: radial-gradient(ellipse at center, rgba(249,115,22,.09) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(249,115,22,.08);
+      border: 1px solid rgba(249,115,22,.22);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 32px;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .5; transform: scale(.7); }
+    }
+
+    .hero h1 {
+      font-family: var(--font-d);
+      font-weight: 900;
+      font-size: clamp(60px, 10vw, 130px);
+      line-height: .9;
+      letter-spacing: -1.5px;
+      margin-bottom: 28px;
+      max-width: 900px;
+    }
+    .hero h1 .accent { color: var(--orange); }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.65;
+      margin-bottom: 44px;
+    }
+
+    /* App store buttons */
+    .dl-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .dl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--text);
+      color: var(--bg);
+      padding: 13px 22px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform .15s, opacity .15s;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .dl-btn:hover { transform: translateY(-2px); opacity: .92; }
+    .dl-btn.dark {
       background: var(--card);
-      border: 1px solid var(--border);
+      color: var(--text);
+      border-color: var(--line);
+    }
+    .dl-btn.dark:hover { border-color: var(--dim); }
+    .dl-icon { width: 28px; height: 28px; flex-shrink: 0; }
+    .dl-text-small { font-size: 10px; font-weight: 500; opacity: .7; display: block; }
+    .dl-text-big   { font-size: 16px; font-weight: 700; display: block; line-height: 1.1; }
+
+    .hero-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 72px;
+    }
+    .hero-note span { color: var(--green); font-weight: 600; }
+
+    /* Rating strip */
+    .rating-strip {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .rating-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .stars { color: var(--gold); font-size: 14px; letter-spacing: 1px; }
+    .rating-num { color: var(--text); font-weight: 700; }
+    .rating-sep { width: 1px; height: 20px; background: var(--line); }
+
+    /* ─── PHONE MOCKUP ─── */
+    .mockup-section {
+      padding: 80px 24px 100px;
+      overflow: hidden;
+      position: relative;
+    }
+    .mockup-glow {
+      position: absolute;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 300px;
+      background: radial-gradient(ellipse, rgba(249,115,22,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .phones {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .phone {
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 36px;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 40px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.03);
+      position: relative;
+    }
+    .phone.main  { width: 240px; height: 480px; }
+    .phone.side  { width: 200px; height: 400px; opacity: .7; }
+    .phone-notch {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 80px; height: 26px;
+      background: var(--bg);
+      border-radius: 0 0 16px 16px;
+      z-index: 10;
+    }
+    .phone-screen {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      padding: 36px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Screen A — home tab */
+    .ps-greeting { font-size: 10px; color: var(--muted); font-weight: 500; }
+    .ps-name     { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .ps-xp-card {
+      background: linear-gradient(135deg, rgba(249,115,22,.12), rgba(239,159,39,.06));
+      border: 1px solid rgba(249,115,22,.2);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .ps-tier-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .ps-tier-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--diamond, #89D4F5); margin-right: 5px; display: inline-block; }
+    .ps-tier-name { font-size: 10px; font-weight: 700; color: #89D4F5; }
+    .ps-rank { font-size: 10px; font-weight: 700; color: var(--orange); }
+    .ps-bar { height: 4px; background: var(--raised); border-radius: 99px; overflow: hidden; }
+    .ps-bar-fill { height: 100%; background: linear-gradient(90deg, var(--orange), var(--gold)); border-radius: 99px; }
+    .ps-upload-cta {
+      background: var(--orange);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .ps-mini-lb { background: var(--surface); border-radius: 10px; padding: 8px; }
+    .ps-lb-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin-bottom: 6px; }
+    .ps-lb-row   { display: flex; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+    .ps-lb-row:last-child { border-bottom: none; }
+    .ps-lb-rank  { font-size: 9px; font-weight: 700; color: var(--muted); width: 12px; }
+    .ps-lb-avi   { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; border: 1.5px solid; }
+    .ps-lb-name  { flex: 1; font-size: 9px; font-weight: 500; }
+    .ps-lb-score { font-family: var(--font-d); font-weight: 900; font-size: 13px; color: var(--orange); }
+    .ps-streak-row {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--surface); border-radius: 8px; padding: 8px 10px;
+    }
+    .ps-streak-num { font-family: var(--font-d); font-weight: 900; font-size: 22px; color: var(--orange); line-height: 1; }
+    .ps-streak-label { font-size: 9px; color: var(--muted); }
+
+    /* Screen B — score reveal */
+    .ps-score-header { text-align: center; padding: 8px 0 4px; }
+    .ps-score-label  { font-size: 9px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+    .ps-score-big    { font-family: var(--font-d); font-weight: 900; font-size: 64px; color: var(--orange); line-height: 1; }
+    .ps-score-delta  { font-size: 10px; font-weight: 700; color: var(--green); }
+    .ps-muscles { display: flex; flex-direction: column; gap: 5px; background: var(--surface); border-radius: 10px; padding: 10px; }
+    .ps-m-row { display: flex; align-items: center; gap: 6px; }
+    .ps-m-label { width: 36px; font-size: 9px; color: var(--muted); font-weight: 500; }
+    .ps-m-track { flex: 1; height: 4px; background: var(--raised); border-radius: 99px; overflow: hidden; }
+    .ps-m-fill  { height: 100%; border-radius: 99px; }
+    .ps-m-val   { font-size: 9px; font-weight: 700; width: 22px; text-align: right; }
+    .ps-xp-reveal {
+      background: var(--surface); border-radius: 10px; padding: 10px;
+    }
+    .ps-xp-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin-bottom: 6px; }
+    .ps-xp-row   { display: flex; justify-content: space-between; font-size: 9px; color: var(--muted); margin-bottom: 3px; }
+    .ps-xp-total { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--text); border-top: 1px solid var(--border); padding-top: 5px; margin-top: 3px; }
+    .ps-xp-amt   { font-family: var(--font-d); font-weight: 900; font-size: 14px; color: var(--orange); }
+
+    /* ─── VALUE PROPS ─── */
+    .props-section {
+      padding: 100px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .props-eyebrow {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--orange);
+      margin-bottom: 16px;
+    }
+    .props-title {
+      text-align: center;
+      font-family: var(--font-d);
+      font-weight: 900;
+      font-size: clamp(40px, 5.5vw, 68px);
+      line-height: .95;
+      letter-spacing: -.5px;
+      margin-bottom: 72px;
+    }
+    .props-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
       border-radius: 20px;
       overflow: hidden;
     }
-    .score-card-top {
-      padding: 32px 32px 24px;
-      background: linear-gradient(135deg, rgba(249,115,22,0.06) 0%, transparent 60%);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-    }
-    .score-big {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 120px;
-      line-height: 1;
-      color: var(--orange);
-      letter-spacing: -4px;
-    }
-    .score-meta { text-align: right; }
-    .score-meta-label {
-      font-size: 11px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      display: block;
-    }
-    .score-delta {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(34,197,94,0.1);
-      border: 1px solid rgba(34,197,94,0.2);
-      border-radius: 6px;
-      padding: 5px 10px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--green);
-    }
-    .score-card-muscles { padding: 20px 32px 24px; display: flex; flex-direction: column; gap: 10px; }
-    .m-row { display: flex; align-items: center; gap: 10px; }
-    .m-label { font-size: 12px; font-weight: 600; color: var(--muted); width: 52px; flex-shrink: 0; }
-    .m-track { flex: 1; height: 5px; background: var(--elevated); border-radius: 99px; overflow: hidden; }
-    .m-fill { height: 100%; border-radius: 99px; }
-    .m-val { font-size: 13px; font-weight: 700; width: 30px; text-align: right; font-variant-numeric: tabular-nums; }
-
-    .mini-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .mini-card {
+    .prop {
       background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
+      padding: 44px 36px;
     }
-    .mini-card-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-    .mini-card-val {
-      font-family: var(--font-display);
+    .prop-num {
+      font-family: var(--font-d);
       font-weight: 900;
-      font-size: 36px;
-      color: var(--text);
-      line-height: 1;
-    }
-    .mini-card-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
-
-    /* ─── TICKER ─── */
-    .ticker {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: var(--card);
-      overflow: hidden;
-      padding: 12px 0;
-    }
-    .ticker-inner {
-      display: flex;
-      gap: 0;
-      animation: ticker 28s linear infinite;
-      width: max-content;
-    }
-    .ticker-inner:hover { animation-play-state: paused; }
-    @keyframes ticker {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-    .ticker-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0 36px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
-      white-space: nowrap;
-      border-right: 1px solid var(--border);
-    }
-    .ticker-item span { color: var(--orange); }
-    .ticker-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--orange);
-      flex-shrink: 0;
-    }
-
-    /* ─── LOOP SECTION ─── */
-    .loop-section {
-      padding: 120px 48px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    .section-kicker {
       font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
       letter-spacing: 2px;
+      text-transform: uppercase;
       color: var(--orange);
       margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
     }
-    .section-kicker::after {
-      content: '';
-      flex: 1;
-      max-width: 40px;
-      height: 1px;
-      background: var(--border-hi);
-    }
-    .loop-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 64px;
-      gap: 48px;
-    }
-    .loop-header h2 {
-      font-family: var(--font-display);
+    .prop h3 {
+      font-family: var(--font-d);
       font-weight: 900;
-      font-size: clamp(52px, 6vw, 80px);
-      line-height: 0.92;
-      letter-spacing: -1px;
-      max-width: 480px;
-    }
-    .loop-header p { font-size: 16px; color: var(--muted); max-width: 300px; line-height: 1.65; }
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4,1fr);
-      gap: 1px;
-      background: var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    .step {
-      background: var(--card);
-      padding: 36px 28px 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    .step-num {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 80px;
+      font-size: 32px;
       line-height: 1;
-      color: var(--border-hi);
-      margin-bottom: 24px;
-      letter-spacing: -2px;
+      letter-spacing: -.3px;
+      margin-bottom: 14px;
     }
-    .step-icon-wrap {
-      width: 40px; height: 40px;
-      border-radius: 10px;
-      background: var(--surface);
-      border: 1px solid var(--border-hi);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 18px;
-    }
-    /* SVG icon shapes */
-    .icon-camera { width: 20px; height: 16px; background: var(--muted); border-radius: 3px; position: relative; }
-    .icon-camera::before {
-      content: '';
-      position: absolute;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      border: 2px solid var(--card);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .icon-ai {
-      width: 18px; height: 18px;
-      border: 2px solid var(--muted);
-      border-radius: 4px;
-      display: grid;
-      place-items: center;
-    }
-    .icon-ai::before {
-      content: '';
-      width: 8px; height: 8px;
-      background: var(--muted);
-      border-radius: 2px;
-    }
-    .icon-xp {
-      width: 16px; height: 20px;
-      background: var(--muted);
-      clip-path: polygon(50% 0%, 100% 40%, 75% 100%, 25% 100%, 0% 40%);
-    }
-    .icon-trophy {
-      width: 18px; height: 18px;
-      border: 2.5px solid var(--muted);
-      border-radius: 3px 3px 0 0;
-      position: relative;
-    }
-    .icon-trophy::after {
-      content: '';
-      position: absolute;
-      bottom: -6px; left: 50%;
-      transform: translateX(-50%);
-      width: 10px; height: 4px;
-      border: 2.5px solid var(--muted);
-      border-top: none;
-    }
-    .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
-    .step p { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 20px; flex: 1; }
-    .step-xp {
-      align-self: flex-start;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--orange);
-      background: var(--orange-lo);
-      border: 1px solid rgba(249,115,22,0.15);
-      border-radius: 6px;
-      padding: 4px 10px;
-    }
-
-    /* ─── BENTO FEATURES ─── */
-    .features-section {
-      padding: 0 48px 120px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    .features-kicker { margin-bottom: 48px; }
-    .bento {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: auto;
-      gap: 12px;
-    }
-    .bento-cell {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-      overflow: hidden;
-    }
-    .bento-cell.span-4  { grid-column: span 4; }
-    .bento-cell.span-5  { grid-column: span 5; }
-    .bento-cell.span-6  { grid-column: span 6; }
-    .bento-cell.span-7  { grid-column: span 7; }
-    .bento-cell.span-8  { grid-column: span 8; }
-    .bento-cell.span-12 { grid-column: span 12; }
-    .bento-cell.accent { border-color: rgba(249,115,22,0.25); background: linear-gradient(135deg, rgba(249,115,22,0.05) 0%, var(--card) 60%); }
-
-    .bento-kicker {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-    .bento-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      line-height: 1.2;
-    }
-    .bento-body {
-      font-size: 14px;
+    .prop p {
+      font-size: 15px;
       color: var(--muted);
       line-height: 1.65;
     }
-    .bento-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 4px 10px;
-      border-radius: 5px;
-      margin-top: 16px;
-    }
-    .badge-free { background: rgba(34,197,94,0.08); color: var(--green); border: 1px solid rgba(34,197,94,0.18); }
-    .badge-pro  { background: rgba(239,159,39,0.08); color: var(--gold); border: 1px solid rgba(239,159,39,0.18); }
 
-    /* Bento visual elements */
-    .commit-grid {
-      display: grid;
-      grid-template-columns: repeat(13,1fr);
-      gap: 3px;
-      margin-top: 20px;
+    /* ─── SOCIAL PROOF ─── */
+    .proof-section {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px;
     }
-    .cg-cell {
-      aspect-ratio: 1;
-      border-radius: 2px;
-      background: var(--elevated);
+    .proof-inner {
+      max-width: 1100px;
+      margin: 0 auto;
     }
-    .leaderboard-preview { margin-top: 16px; display: flex; flex-direction: column; gap: 6px; }
-    .lb-mini-row {
+    .proof-top {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      background: var(--surface);
-      border-radius: 8px;
-      border: 1px solid var(--border);
+      justify-content: center;
+      gap: 48px;
+      margin-bottom: 64px;
+      flex-wrap: wrap;
     }
-    .lb-mini-row.me { border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.04); }
-    .lb-mini-rank { font-size: 13px; font-weight: 700; width: 20px; color: var(--muted); }
-    .lb-mini-avi { width: 26px; height: 26px; border-radius: 50%; background: var(--border-hi); flex-shrink: 0; font-size: 10px; display:flex;align-items:center;justify-content:center; border: 1.5px solid; }
-    .lb-mini-name { flex: 1; font-size: 13px; font-weight: 500; }
-    .lb-mini-score { font-family: var(--font-display); font-weight: 900; font-size: 18px; color: var(--orange); }
-    .lb-mini-delta { font-size: 11px; font-weight: 700; width: 28px; text-align: right; }
-
-    .split-score-display {
-      margin-top: 20px;
-    }
-    .split-num {
-      font-family: var(--font-display);
+    .proof-stat { text-align: center; }
+    .proof-stat-num {
+      font-family: var(--font-d);
       font-weight: 900;
-      font-size: 80px;
-      line-height: 1;
-      letter-spacing: -2px;
-      margin-bottom: 4px;
-    }
-    .split-of { font-size: 14px; color: var(--muted); font-weight: 600; margin-bottom: 16px; }
-    .split-freq-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-      font-size: 13px;
-    }
-    .freq-label { width: 52px; color: var(--muted); font-weight: 500; }
-    .freq-pill {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
-    .freq-ok  { background: rgba(34,197,94,0.1); color: var(--green); }
-    .freq-hi  { background: rgba(239,68,68,0.1); color: var(--red); }
-    .freq-lo  { background: rgba(239,159,39,0.1); color: var(--gold); }
-
-    .wrapped-card {
-      margin-top: 20px;
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 8px;
-    }
-    .wrapped-stat {
-      background: var(--surface);
-      border-radius: 10px;
-      padding: 14px;
-    }
-    .wrapped-num {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 28px;
+      font-size: 52px;
       line-height: 1;
       display: block;
       margin-bottom: 4px;
     }
-    .wrapped-label { font-size: 11px; color: var(--muted); }
+    .proof-stat-label { font-size: 13px; color: var(--muted); }
+    .proof-sep { width: 1px; height: 60px; background: var(--line); }
+    .proof-stars-block { text-align: center; }
+    .proof-big-stars { font-size: 28px; letter-spacing: 4px; color: var(--gold); line-height: 1; margin-bottom: 6px; }
+    .proof-rating { font-family: var(--font-d); font-weight: 900; font-size: 40px; color: var(--text); line-height: 1; }
+    .proof-rating-label { font-size: 13px; color: var(--muted); }
 
-    /* ─── XP SECTION ─── */
-    .xp-section {
-      padding: 120px 48px;
-      background: var(--card);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .xp-inner {
-      max-width: 1400px;
-      margin: 0 auto;
+    .reviews-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .xp-left h2 {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(48px, 5vw, 72px);
-      line-height: 0.92;
-      letter-spacing: -1px;
-      margin-bottom: 24px;
-    }
-    .xp-left p { font-size: 16px; color: var(--muted); line-height: 1.65; margin-bottom: 40px; }
-    .xp-economy {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .xp-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      background: var(--surface);
-      border-radius: 8px;
-      transition: background 0.15s;
-    }
-    .xp-row:hover { background: var(--elevated); }
-    .xp-action { font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 10px; }
-    .xp-icon {
-      width: 28px; height: 28px;
-      border-radius: 7px;
-      background: var(--elevated);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .xp-amount {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 18px;
-      color: var(--orange);
-      white-space: nowrap;
-    }
-    .xp-amount.milestone { color: var(--gold); }
-
-    .xp-right { display: flex; flex-direction: column; gap: 16px; }
-    .level-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-    }
-    .level-top {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 6px;
-    }
-    .level-big {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 64px;
-      line-height: 1;
-      color: var(--text);
-      letter-spacing: -2px;
-    }
-    .tier-chip {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 14px;
-      padding: 5px 14px;
-      border-radius: 6px;
-      background: rgba(137,212,245,0.1);
-      color: var(--diamond);
-      border: 1px solid rgba(137,212,245,0.2);
-    }
-    .xp-bar-track {
-      height: 8px;
-      background: var(--elevated);
-      border-radius: 99px;
-      overflow: hidden;
-      margin-bottom: 8px;
-    }
-    .xp-bar-fill {
-      height: 100%;
-      width: 72%;
-      background: linear-gradient(90deg, var(--orange), var(--gold));
-      border-radius: 99px;
-    }
-    .xp-bar-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .streak-widget {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px 28px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .streak-icon {
-      width: 52px; height: 52px;
-      border-radius: 12px;
-      background: rgba(249,115,22,0.1);
-      border: 1px solid rgba(249,115,22,0.2);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .flame-svg { width: 24px; height: 28px; }
-    .streak-num-big {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 48px;
-      color: var(--orange);
-      line-height: 1;
-    }
-    .streak-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
-
-    /* ─── TIERS ─── */
-    .tiers-section {
-      padding: 120px 48px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    .tiers-layout {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .tiers-left h2 {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(52px, 5.5vw, 76px);
-      line-height: 0.92;
-      letter-spacing: -1px;
-      margin-bottom: 20px;
-    }
-    .tiers-left p { font-size: 15px; color: var(--muted); line-height: 1.65; margin-bottom: 28px; }
-    .tiers-formula {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-    }
-    .formula-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; }
-    .formula-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-      font-size: 13px;
-    }
-    .formula-pct {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 22px;
-      color: var(--orange);
-      width: 44px;
-      flex-shrink: 0;
-    }
-    .formula-desc { color: var(--muted); }
-    .tiers-right {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .tier-row {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px 20px;
-      background: var(--card);
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .tier-row:hover { background: var(--surface); }
-    .tier-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .tier-name-text {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 22px;
-      min-width: 130px;
-    }
-    .tier-levels { font-size: 13px; color: var(--muted); flex: 1; }
-    .tier-bar-track { flex: 1; height: 4px; background: var(--elevated); border-radius: 99px; overflow: hidden; }
-    .tier-bar-fill { height: 100%; border-radius: 99px; }
-
-    /* ─── PRICING ─── */
-    .pricing-section {
-      padding: 120px 48px;
-      background: var(--card);
-      border-top: 1px solid var(--border);
-    }
-    .pricing-inner { max-width: 1100px; margin: 0 auto; }
-    .pricing-header {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-      margin-bottom: 64px;
-    }
-    .pricing-header h2 {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(52px, 5.5vw, 76px);
-      line-height: 0.92;
-      letter-spacing: -1px;
-    }
-    .pricing-header p { font-size: 16px; color: var(--muted); line-height: 1.65; padding-top: 8px; }
-    .pricing-toggle {
-      display: inline-flex;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 3px;
-      gap: 3px;
-      margin-bottom: 36px;
-    }
-    .toggle-opt {
-      font-size: 13px;
-      font-weight: 600;
-      padding: 6px 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      color: var(--muted);
-      transition: all 0.15s;
-      user-select: none;
-    }
-    .toggle-opt.active { background: var(--elevated); color: var(--text); }
-    .save-pill {
-      font-size: 11px;
-      font-weight: 700;
-      background: rgba(34,197,94,0.1);
-      color: var(--green);
-      border: 1px solid rgba(34,197,94,0.2);
-      border-radius: 4px;
-      padding: 2px 7px;
-      margin-left: 6px;
-    }
-    .plans {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 12px;
     }
-    .plan {
+    .review-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 36px 32px;
+      padding: 28px 24px;
     }
-    .plan.featured {
+    .review-stars { font-size: 13px; color: var(--gold); letter-spacing: 2px; margin-bottom: 14px; }
+    .review-text  { font-size: 14px; color: var(--text); line-height: 1.65; margin-bottom: 18px; font-style: italic; }
+    .review-author { display: flex; align-items: center; gap: 10px; }
+    .review-avi {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .review-name  { font-size: 13px; font-weight: 700; }
+    .review-meta  { font-size: 12px; color: var(--muted); }
+
+    /* ─── HOW IT WORKS ─── */
+    .how-section {
+      padding: 100px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .how-eyebrow {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--orange); margin-bottom: 16px; text-align: center;
+    }
+    .how-title {
+      font-family: var(--font-d); font-weight: 900;
+      font-size: clamp(40px,5.5vw,64px); line-height: .95;
+      letter-spacing: -.5px; text-align: center; margin-bottom: 64px;
+    }
+    .how-steps { display: flex; flex-direction: column; gap: 2px; }
+    .how-step {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 24px;
+      align-items: start;
       background: var(--card);
-      border-color: rgba(249,115,22,0.3);
+      border-radius: 14px;
+      padding: 28px 24px;
+      border: 1px solid var(--border);
+      transition: border-color .2s;
+    }
+    .how-step:hover { border-color: var(--line); }
+    .how-step-num {
+      font-family: var(--font-d);
+      font-weight: 900;
+      font-size: 40px;
+      color: var(--dim);
+      line-height: 1;
+      text-align: right;
+    }
+    .how-step h3 { font-size: 19px; font-weight: 700; margin-bottom: 6px; }
+    .how-step p  { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .how-xp {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 700; color: var(--orange);
+      background: rgba(249,115,22,.08); border: 1px solid rgba(249,115,22,.15);
+      border-radius: 5px; padding: 3px 9px; margin-top: 10px;
+    }
+
+    /* ─── FREE VS PRO ─── */
+    .plan-section {
+      padding: 100px 24px;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+    }
+    .plan-inner { max-width: 820px; margin: 0 auto; }
+    .plan-eyebrow {
+      text-align: center; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2px; color: var(--orange); margin-bottom: 16px;
+    }
+    .plan-title {
+      text-align: center;
+      font-family: var(--font-d); font-weight: 900;
+      font-size: clamp(40px,5.5vw,64px); line-height: .95;
+      letter-spacing: -.5px; margin-bottom: 56px;
+    }
+    .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .plan-card {
+      border-radius: 18px;
+      padding: 36px 30px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .plan-card.pro {
+      background: var(--card);
+      border-color: rgba(249,115,22,.3);
       position: relative;
     }
-    .plan-top-badge {
+    .pro-badge {
       position: absolute;
-      top: -1px; left: 50%;
+      top: -14px; left: 50%;
       transform: translateX(-50%);
       background: var(--orange);
       color: #fff;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
+      font-size: 11px; font-weight: 700;
+      padding: 5px 18px;
+      border-radius: 999px;
+      white-space: nowrap;
       text-transform: uppercase;
-      padding: 5px 16px;
-      border-radius: 0 0 8px 8px;
+      letter-spacing: .5px;
     }
-    .plan-name { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 16px; }
-    .plan-price-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px; }
-    .plan-dollar { font-size: 20px; font-weight: 700; color: var(--muted); align-self: flex-start; margin-top: 10px; }
-    .plan-amount {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 64px;
-      line-height: 1;
-      letter-spacing: -2px;
+    .plan-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 14px; }
+    .plan-price {
+      font-family: var(--font-d);
+      font-weight: 900; font-size: 56px;
+      line-height: 1; letter-spacing: -1px;
+      margin-bottom: 4px;
     }
-    .plan-per { font-size: 14px; color: var(--muted); align-self: flex-end; padding-bottom: 6px; }
-    .plan-note { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
-    .plan-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
-    .plan-feats { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .plan-period { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+    .plan-feats { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
     .plan-feats li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; }
-    .plan-feats li.on { color: var(--text); }
-    .plan-feats li.off { color: var(--muted); }
-    .feat-check, .feat-x {
-      width: 18px; height: 18px;
-      border-radius: 5px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px;
-      font-weight: 800;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .feat-check { background: rgba(34,197,94,0.1); color: var(--green); }
-    .feat-x { background: var(--elevated); color: var(--subtle); }
+    .plan-feats li.on  { color: var(--text); }
+    .plan-feats li.off { color: var(--dim); }
+    .ft-chk { width: 17px; height: 17px; border-radius: 5px; display: grid; place-items: center; font-size: 9px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+    .ft-on  { background: rgba(34,197,94,.1); color: var(--green); }
+    .ft-off { background: var(--raised); color: var(--dim); }
     .plan-cta {
-      display: block;
-      text-align: center;
-      padding: 15px;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 700;
-      text-decoration: none;
-      margin-top: 28px;
-      transition: opacity 0.15s, transform 0.15s;
+      display: block; text-align: center; padding: 14px; border-radius: 10px;
+      font-size: 15px; font-weight: 700; text-decoration: none;
+      transition: opacity .15s, transform .15s;
     }
-    .plan-cta:hover { opacity: 0.85; transform: translateY(-1px); }
-    .cta-orange { background: var(--orange); color: #fff; }
-    .cta-outline { background: transparent; color: var(--text); border: 1px solid var(--border-hi); }
-    .cta-outline:hover { border-color: var(--muted); }
-
-    /* ─── SAFETY ─── */
-    .safety-section {
-      padding: 100px 48px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    .safety-grid {
-      display: grid;
-      grid-template-columns: repeat(4,1fr);
-      gap: 12px;
-      margin-top: 56px;
-    }
-    .safety-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 28px 24px;
-    }
-    .safety-icon-block {
-      width: 40px; height: 40px;
-      border-radius: 10px;
-      background: var(--surface);
-      border: 1px solid var(--border-hi);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 18px;
-    }
-    .safety-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-    .safety-card p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    .plan-cta:hover { opacity: .85; transform: translateY(-1px); }
+    .cta-fill   { background: var(--orange); color: #fff; }
+    .cta-border { background: transparent; color: var(--text); border: 1px solid var(--line); }
+    .plan-trial { text-align: center; font-size: 13px; color: var(--muted); margin-top: 16px; }
 
     /* ─── FINAL CTA ─── */
-    .final-cta {
-      padding: 160px 48px;
+    .final {
+      padding: 140px 24px;
       text-align: center;
-      background: var(--card);
-      border-top: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
     }
-    .final-cta-inner { max-width: 720px; margin: 0 auto; }
-    .final-cta h2 {
-      font-family: var(--font-display);
+    .final-glow {
+      position: absolute;
+      bottom: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 500px;
+      background: radial-gradient(ellipse, rgba(249,115,22,.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .final-inner { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+    .final h2 {
+      font-family: var(--font-d);
       font-weight: 900;
-      font-size: clamp(64px, 8vw, 120px);
-      line-height: 0.88;
+      font-size: clamp(56px, 9vw, 112px);
+      line-height: .88;
       letter-spacing: -2px;
       margin-bottom: 24px;
     }
-    .final-cta h2 em { font-style: normal; color: var(--orange); }
-    .final-cta p { font-size: 18px; color: var(--muted); margin-bottom: 44px; line-height: 1.6; }
-    .store-row { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
-    .store-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 14px;
-      background: var(--surface);
-      border: 1px solid var(--border-hi);
-      border-radius: 12px;
-      padding: 14px 24px;
-      text-decoration: none;
-      color: var(--text);
-      transition: border-color 0.15s, transform 0.15s;
-    }
-    .store-btn:hover { border-color: var(--orange); transform: translateY(-2px); }
-    .store-icon-wrap {
-      width: 36px; height: 36px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    /* Apple logo shape */
-    .apple-shape {
-      width: 22px; height: 26px;
-      background: var(--text);
-      border-radius: 50% 50% 42% 42% / 45% 45% 55% 55%;
-      position: relative;
-    }
-    .apple-shape::before {
-      content: '';
-      position: absolute;
-      top: -6px; left: 6px;
-      width: 7px; height: 8px;
-      background: var(--text);
-      border-radius: 50% 50% 0 50%;
-      transform: rotate(20deg);
-    }
-    /* Play triangle */
-    .play-shape {
-      width: 0;
-      border-style: solid;
-      border-width: 12px 0 12px 22px;
-      border-color: transparent transparent transparent var(--text);
-    }
-    .store-label-sub { font-size: 11px; color: var(--muted); display: block; }
-    .store-label-name { font-size: 16px; font-weight: 700; display: block; }
+    .final h2 em { font-style: italic; color: var(--orange); }
+    .final p { font-size: 18px; color: var(--muted); line-height: 1.6; margin-bottom: 44px; }
+    .final-dl { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .final-note { font-size: 13px; color: var(--muted); }
+    .final-note span { color: var(--green); font-weight: 600; }
 
     /* ─── FOOTER ─── */
     footer {
-      background: var(--bg);
       border-top: 1px solid var(--border);
-      padding: 64px 48px 40px;
+      padding: 48px 40px 32px;
     }
-    .footer-grid {
-      max-width: 1400px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 48px;
-      padding-bottom: 48px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 32px;
-    }
-    .footer-brand-desc {
-      font-size: 14px;
-      color: var(--muted);
-      margin-top: 14px;
-      max-width: 260px;
-      line-height: 1.65;
-    }
-    .footer-col-title {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
-    .footer-col a {
-      font-size: 14px;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    .footer-col a:hover { color: var(--text); }
-    .footer-bottom {
-      max-width: 1400px;
+    .footer-inner {
+      max-width: 1100px;
       margin: 0 auto;
       display: flex;
+      align-items: flex-start;
       justify-content: space-between;
-      font-size: 13px;
-      color: var(--muted);
+      gap: 40px;
+      flex-wrap: wrap;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
     }
+    .footer-brand-sub { font-size: 13px; color: var(--muted); margin-top: 10px; max-width: 220px; line-height: 1.6; }
+    .footer-links { display: flex; gap: 40px; flex-wrap: wrap; }
+    .footer-col h5 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .15s; }
+    .footer-col a:hover { color: var(--text); }
+    .footer-bottom { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); flex-wrap: wrap; gap: 8px; }
 
-    /* ─── SCROLL REVEAL ─── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    /* ─── ANIMATIONS ─── */
+    .fade {
+      opacity: 0; transform: translateY(22px);
+      transition: opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1);
     }
-    .reveal.in { opacity: 1; transform: none; }
-    .reveal-d1 { transition-delay: 0.05s; }
-    .reveal-d2 { transition-delay: 0.12s; }
-    .reveal-d3 { transition-delay: 0.19s; }
-    .reveal-d4 { transition-delay: 0.26s; }
+    .fade.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: .07s; }
+    .d2 { transition-delay: .14s; }
+    .d3 { transition-delay: .21s; }
 
     /* ─── RESPONSIVE ─── */
-    @media (max-width: 1024px) {
-      nav { padding: 0 24px; }
-      .nav-center { display: none; }
-      .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
-      .hero-right { display: none; }
-      .loop-section, .features-section, .tiers-section, .safety-section { padding-left: 24px; padding-right: 24px; }
-      .xp-section { padding: 80px 24px; }
-      .xp-inner { grid-template-columns: 1fr; gap: 48px; }
-      .pricing-section { padding: 80px 24px; }
-      .pricing-header { grid-template-columns: 1fr; gap: 20px; }
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .phones .side { display: none; }
+      .props-grid { grid-template-columns: 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
       .plans { grid-template-columns: 1fr; }
-      .steps { grid-template-columns: 1fr 1fr; }
-      .tiers-layout { grid-template-columns: 1fr; gap: 48px; }
-      .safety-grid { grid-template-columns: 1fr 1fr; }
-      .bento-cell.span-4, .bento-cell.span-5, .bento-cell.span-6,
-      .bento-cell.span-7, .bento-cell.span-8 { grid-column: span 12; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-      .footer-bottom { flex-direction: column; gap: 8px; }
-      .final-cta { padding: 100px 24px; }
+      .footer-inner { flex-direction: column; }
     }
     @media (max-width: 600px) {
-      .steps { grid-template-columns: 1fr; }
-      .safety-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .hero-stats { grid-template-columns: 1fr 1fr; }
-      .mini-cards { grid-template-columns: 1fr; }
+      .proof-sep { display: none; }
+      .proof-top { gap: 24px; }
     }
   </style>
 </head>
@@ -1152,727 +670,499 @@
 <nav>
   <a class="logo" href="#">
     <div class="logo-mark">FF</div>
-    <span class="logo-text">FitFrame</span>
+    <span class="logo-name">FitFrame</span>
   </a>
-  <div class="nav-center">
-    <a class="nav-link" href="#loop">How it works</a>
-    <a class="nav-link" href="#features">Features</a>
-    <a class="nav-link" href="#tiers">Tiers</a>
-    <a class="nav-link" href="#pricing">Pricing</a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#pricing">Pricing</a>
   </div>
-  <div class="nav-right">
-    <a class="btn-ghost" href="#">Sign in</a>
-    <a class="btn-nav" href="#pricing">Start free</a>
-  </div>
+  <a class="nav-dl" href="#download">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Download free
+  </a>
 </nav>
 
 <!-- HERO -->
-<section style="background:var(--bg)">
-  <div class="hero">
-    <div class="hero-left">
-      <div class="hero-tag">Gamified physique tracking</div>
-      <h1 class="hero-h1">
-        Track your<br />physique.
-        <span class="line2">Earn your<br />rank.</span>
-      </h1>
-      <p class="hero-sub">
-        Upload daily, get scored by AI, earn XP, and compete on global leaderboards. Not a diet app. Tracks commitment and transformation.
-      </p>
-      <div class="hero-actions">
-        <a class="btn-primary" href="#pricing">Download — it's free</a>
-        <a class="btn-plain" href="#loop">See how it works →</a>
+<section class="hero">
+  <div class="hero-glow"></div>
+
+  <div class="hero-badge fade">
+    <span class="hero-badge-dot"></span>
+    Now available on iOS &amp; Android
+  </div>
+
+  <h1 class="fade d1">
+    Show up.<br /><span class="accent">Level up.</span>
+  </h1>
+
+  <p class="hero-sub fade d2">
+    Upload a daily photo, get AI-scored on every muscle group, earn XP, and compete on global leaderboards. One upload a day. That's the whole game.
+  </p>
+
+  <div class="dl-group fade d3" id="download">
+    <a class="dl-btn" href="#">
+      <svg class="dl-icon" viewBox="0 0 28 28" fill="none">
+        <path d="M14 3.5C14 3.5 18 7 18 11.5C18 14.5 16 17 14 17C12 17 10 14.5 10 11.5C10 7 14 3.5 14 3.5Z" fill="#1A1A1A"/>
+        <path d="M14 3.5C14 3.5 18 7 18 11.5C18 14.5 16 17 14 17C12 17 10 14.5 10 11.5C10 7 14 3.5 14 3.5Z" stroke="#1A1A1A" stroke-width="1"/>
+        <path d="M5 18C5 14 8.5 12 11 12C11 15 12.5 17 14 17C15.5 17 17 15 17 12C19.5 12 23 14 23 18C23 22.5 19 25 14 25C9 25 5 22.5 5 18Z" fill="#1A1A1A"/>
+        <path d="M14 2.5C14.5 1 15.5 0.5 16.5 1" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <svg class="dl-icon" viewBox="0 0 28 28" fill="none" style="display:none"></svg>
+      <!-- Apple logo using text -->
+      <svg class="dl-icon" viewBox="0 0 28 28" fill="none">
+        <path d="M19.5 15.2C19.5 12.8 20.9 11.5 20.9 11.5C20.9 11.5 19.6 9.5 17.2 9.5C15.2 9.5 14.3 10.8 13.1 10.8C11.9 10.8 10.8 9.5 9 9.5C6.6 9.5 4 11.8 4 15.5C4 18.8 6.2 23.5 8.5 23.5C9.8 23.5 10.7 22.5 12.2 22.5C13.6 22.5 14.4 23.5 15.9 23.5C18.3 23.5 20.5 19 21 17C21 17 19.5 16.2 19.5 15.2Z" fill="#111"/>
+        <path d="M16.5 5.5C17.2 4.6 17.5 3.5 17.3 2.5C16.3 2.6 15.1 3.2 14.3 4.2C13.6 5 13.2 6.1 13.4 7C14.5 7.1 15.7 6.5 16.5 5.5Z" fill="#111"/>
+      </svg>
+      <div>
+        <span class="dl-text-small">Download on the</span>
+        <span class="dl-text-big">App Store</span>
       </div>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <span class="hero-stat-num">8</span>
-          <span class="hero-stat-label">Rank tiers</span>
+    </a>
+    <a class="dl-btn dark" href="#">
+      <svg class="dl-icon" viewBox="0 0 28 28" fill="none">
+        <path d="M6 5.5L16.5 14L6 22.5" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M6 5.5L22 14L6 22.5" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M6 5.5C5 5 4 5.8 4 7V21C4 22.2 5 23 6 22.5L22 14L6 5.5Z" fill="#F0F0F0" fill-opacity=".15"/>
+      </svg>
+      <div>
+        <span class="dl-text-small">Get it on</span>
+        <span class="dl-text-big">Google Play</span>
+      </div>
+    </a>
+  </div>
+
+  <p class="hero-note fade"><span>Free to download</span> · No credit card · Cancel Pro anytime</p>
+
+  <div class="rating-strip fade">
+    <div class="rating-item">
+      <span class="stars">★★★★★</span>
+      <span class="rating-num">4.9</span>
+      App Store
+    </div>
+    <div class="rating-sep"></div>
+    <div class="rating-item">
+      <span class="stars">★★★★★</span>
+      <span class="rating-num">4.8</span>
+      Google Play
+    </div>
+    <div class="rating-sep"></div>
+    <div class="rating-item">
+      <span class="rating-num">10k+</span>
+      downloads
+    </div>
+  </div>
+</section>
+
+<!-- PHONE MOCKUPS -->
+<section class="mockup-section">
+  <div class="mockup-glow"></div>
+  <div class="phones fade">
+
+    <!-- Side phone: leaderboard -->
+    <div class="phone side" style="transform: rotate(-4deg) translateY(30px)">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div style="font-size:11px;font-weight:700;margin-bottom:8px">Leaderboard</div>
+        <div style="display:flex;gap:4px;margin-bottom:12px">
+          <div style="background:var(--orange);border-radius:5px;padding:3px 8px;font-size:9px;font-weight:700;color:#fff">World</div>
+          <div style="background:var(--surface);border-radius:5px;padding:3px 8px;font-size:9px;color:var(--muted)">Country</div>
+          <div style="background:var(--surface);border-radius:5px;padding:3px 8px;font-size:9px;color:var(--muted)">City</div>
         </div>
-        <div class="hero-stat">
-          <span class="hero-stat-num">AI</span>
-          <span class="hero-stat-label">Coach, daily</span>
+        <!-- Podium -->
+        <div style="display:flex;align-items:flex-end;justify-content:center;gap:6px;padding:8px 0 12px;background:linear-gradient(180deg,rgba(249,115,22,.06),transparent);border-radius:10px;margin-bottom:8px">
+          <div style="text-align:center">
+            <div style="font-size:7px;color:var(--muted)">2nd</div>
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--surface);border:2px solid #B4B2A9;margin:3px auto"></div>
+            <div style="height:44px;width:44px;background:rgba(180,178,169,.12);border-radius:4px 4px 0 0;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:900;font-size:14px;color:#B4B2A9">2</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:7px;color:var(--muted)">1st</div>
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--surface);border:2px solid var(--gold);margin:3px auto"></div>
+            <div style="height:62px;width:52px;background:rgba(239,159,39,.15);border-radius:4px 4px 0 0;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:900;font-size:18px;color:var(--gold)">1</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:7px;color:var(--muted)">3rd</div>
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--surface);border:2px solid #D85A30;margin:3px auto"></div>
+            <div style="height:32px;width:40px;background:rgba(216,90,48,.12);border-radius:4px 4px 0 0;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:900;font-size:12px;color:#D85A30">3</div>
+          </div>
         </div>
-        <div class="hero-stat">
-          <span class="hero-stat-num">Lv 100</span>
-          <span class="hero-stat-label">Max rank</span>
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <div style="display:flex;align-items:center;gap:6px;padding:6px 8px;background:var(--surface);border-radius:6px;border:1px solid var(--border)">
+            <div style="font-size:9px;font-weight:700;color:var(--muted);width:12px">4</div>
+            <div style="width:16px;height:16px;border-radius:50%;background:var(--raised);flex-shrink:0"></div>
+            <div style="flex:1;font-size:9px">grind_42</div>
+            <div style="font-family:var(--font-d);font-weight:900;font-size:13px;color:var(--orange)">87.3</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;padding:6px 8px;background:rgba(249,115,22,.05);border-radius:6px;border:1px solid rgba(249,115,22,.25)">
+            <div style="font-size:9px;font-weight:700;color:var(--orange);width:12px">5</div>
+            <div style="width:16px;height:16px;border-radius:50%;background:rgba(249,115,22,.3);flex-shrink:0;border:1.5px solid var(--orange)"></div>
+            <div style="flex:1;font-size:9px;font-weight:700">You</div>
+            <div style="font-family:var(--font-d);font-weight:900;font-size:13px;color:var(--orange)">84.1</div>
+            <div style="font-size:8px;color:var(--green);font-weight:700">↑3</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="hero-right">
-      <div class="score-card">
-        <div class="score-card-top">
-          <div>
-            <span style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:8px">Progress Score</span>
-            <div class="score-big">78</div>
+    <!-- Main phone: home screen -->
+    <div class="phone main">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="ps-greeting">Good morning 👋</div>
+        <div class="ps-name">Marcus</div>
+        <div class="ps-xp-card">
+          <div class="ps-tier-row">
+            <div><span class="ps-tier-dot"></span><span class="ps-tier-name">Diamond</span></div>
+            <div class="ps-rank">#5 World</div>
           </div>
-          <div class="score-meta">
-            <span class="score-meta-label">vs last week</span>
-            <div class="score-delta">↑ +6 pts</div>
-            <div style="margin-top:12px;font-size:13px;font-weight:600;color:var(--text)">Great work!</div>
+          <div class="ps-bar"><div class="ps-bar-fill" style="width:72%"></div></div>
+        </div>
+        <div class="ps-streak-row">
+          <div>
+            <div class="ps-streak-num">47</div>
+            <div class="ps-streak-label">day streak 🔥</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div style="font-size:10px;color:var(--muted)">Today's mission</div>
+            <div style="font-size:10px;font-weight:700">Front Pose</div>
+            <div style="font-size:9px;color:var(--orange)">+75 XP</div>
           </div>
         </div>
-        <div class="score-card-muscles">
-          <div class="m-row">
-            <div class="m-label" style="color:var(--muted)">Chest</div>
-            <div class="m-track"><div class="m-fill" style="width:82%;background:var(--green)"></div></div>
-            <div class="m-val" style="color:var(--green)">82</div>
+        <div class="ps-upload-cta">📸  Upload today's photo</div>
+        <div class="ps-mini-lb">
+          <div class="ps-lb-title">Mini Leaderboard</div>
+          <div class="ps-lb-row">
+            <div class="ps-lb-rank" style="color:var(--gold)">1</div>
+            <div class="ps-lb-avi" style="border-color:var(--gold);background:rgba(239,159,39,.1)"></div>
+            <div class="ps-lb-name">apex_kai</div>
+            <div class="ps-lb-score">94.2</div>
           </div>
-          <div class="m-row">
-            <div class="m-label" style="color:var(--muted)">Arms</div>
-            <div class="m-track"><div class="m-fill" style="width:71%;background:var(--orange)"></div></div>
-            <div class="m-val" style="color:var(--orange)">71</div>
+          <div class="ps-lb-row" style="background:rgba(249,115,22,.04)">
+            <div class="ps-lb-rank" style="color:var(--orange)">5</div>
+            <div class="ps-lb-avi" style="border-color:var(--orange);background:rgba(249,115,22,.15)"></div>
+            <div class="ps-lb-name" style="font-weight:700">You</div>
+            <div class="ps-lb-score">84.1</div>
           </div>
-          <div class="m-row">
-            <div class="m-label" style="color:var(--muted)">Back</div>
-            <div class="m-track"><div class="m-fill" style="width:65%;background:var(--orange)"></div></div>
-            <div class="m-val" style="color:var(--orange)">65</div>
-          </div>
-          <div class="m-row">
-            <div class="m-label" style="color:var(--muted)">Core</div>
-            <div class="m-track"><div class="m-fill" style="width:58%;background:var(--gold)"></div></div>
-            <div class="m-val" style="color:var(--gold)">58</div>
-          </div>
-          <div class="m-row">
-            <div class="m-label" style="color:var(--muted)">Legs</div>
-            <div class="m-track"><div class="m-fill" style="width:44%;background:var(--red)"></div></div>
-            <div class="m-val" style="color:var(--red)">44</div>
+          <div class="ps-lb-row">
+            <div class="ps-lb-rank">6</div>
+            <div class="ps-lb-avi" style="border-color:var(--dim)"></div>
+            <div class="ps-lb-name">iron_j ⚔</div>
+            <div class="ps-lb-score">81.7</div>
           </div>
         </div>
       </div>
-      <div class="mini-cards">
-        <div class="mini-card">
-          <div class="mini-card-label">Day streak</div>
-          <div class="mini-card-val" style="color:var(--orange)">47</div>
-          <div class="mini-card-sub">Keep it going</div>
+    </div>
+
+    <!-- Side phone: score reveal -->
+    <div class="phone side" style="transform: rotate(4deg) translateY(30px)">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="ps-score-header">
+          <div class="ps-score-label">Progress Score</div>
+          <div class="ps-score-big">78</div>
+          <div class="ps-score-delta">↑ +6 pts this week</div>
         </div>
-        <div class="mini-card">
-          <div class="mini-card-label">Global rank</div>
-          <div class="mini-card-val">#5</div>
-          <div class="mini-card-sub">↑ from #8</div>
+        <div class="ps-muscles">
+          <div class="ps-m-row">
+            <div class="ps-m-label">Chest</div>
+            <div class="ps-m-track"><div class="ps-m-fill" style="width:82%;background:var(--green)"></div></div>
+            <div class="ps-m-val" style="color:var(--green)">82</div>
+          </div>
+          <div class="ps-m-row">
+            <div class="ps-m-label">Arms</div>
+            <div class="ps-m-track"><div class="ps-m-fill" style="width:71%;background:var(--orange)"></div></div>
+            <div class="ps-m-val" style="color:var(--orange)">71</div>
+          </div>
+          <div class="ps-m-row">
+            <div class="ps-m-label">Back</div>
+            <div class="ps-m-track"><div class="ps-m-fill" style="width:65%;background:var(--orange)"></div></div>
+            <div class="ps-m-val" style="color:var(--orange)">65</div>
+          </div>
+          <div class="ps-m-row">
+            <div class="ps-m-label">Core</div>
+            <div class="ps-m-track"><div class="ps-m-fill" style="width:58%;background:var(--gold)"></div></div>
+            <div class="ps-m-val" style="color:var(--gold)">58</div>
+          </div>
+          <div class="ps-m-row">
+            <div class="ps-m-label">Legs</div>
+            <div class="ps-m-track"><div class="ps-m-fill" style="width:44%;background:var(--red)"></div></div>
+            <div class="ps-m-val" style="color:var(--red)">44</div>
+          </div>
+        </div>
+        <div class="ps-xp-reveal">
+          <div class="ps-xp-title">XP Earned</div>
+          <div class="ps-xp-row"><span>Daily upload</span><span style="color:var(--orange);font-weight:700">+50</span></div>
+          <div class="ps-xp-row"><span>Good quality</span><span style="color:var(--orange);font-weight:700">+25</span></div>
+          <div class="ps-xp-row"><span>Improvement</span><span style="color:var(--orange);font-weight:700">+100</span></div>
+          <div class="ps-xp-row"><span>Mission done</span><span style="color:var(--orange);font-weight:700">+75</span></div>
+          <div class="ps-xp-total">
+            <span>Total</span>
+            <span class="ps-xp-amt">+250 XP</span>
+          </div>
+        </div>
+        <div style="background:var(--orange);border-radius:8px;padding:8px;text-align:center;font-size:10px;font-weight:700;color:#fff">
+          Done for today ✓
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- VALUE PROPS -->
+<section class="props-section" id="how">
+  <div class="props-eyebrow fade">Why it works</div>
+  <h2 class="props-title fade">Built different.</h2>
+  <div class="props-grid fade">
+    <div class="prop">
+      <div class="prop-num">01</div>
+      <h3>AI that's actually honest</h3>
+      <p>Claude scores each muscle group on every upload — relative to your own baseline, not someone else's body. Progress score. Not physique rating. Never weight or BMI.</p>
+    </div>
+    <div class="prop">
+      <div class="prop-num">02</div>
+      <h3>Compete like it matters</h3>
+      <p>Global, national, and city leaderboards updated in real time. Pick a rival and track them daily. Overtake them and earn XP. Every rank change feels earned.</p>
+    </div>
+    <div class="prop">
+      <div class="prop-num">03</div>
+      <h3>Consistency becomes a habit</h3>
+      <p>Streak flames, daily missions, badge unlocks, and a 91-day commit graph that makes showing up feel rewarding every single day — not just when you see results.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="proof-section" id="reviews">
+  <div class="proof-inner">
+    <div class="proof-top fade">
+      <div class="proof-stat">
+        <span class="proof-stat-num" style="color:var(--orange)">10k+</span>
+        <span class="proof-stat-label">Downloads</span>
+      </div>
+      <div class="proof-sep"></div>
+      <div class="proof-stars-block">
+        <div class="proof-big-stars">★★★★★</div>
+        <div class="proof-rating">4.9</div>
+        <div class="proof-rating-label">App Store rating</div>
+      </div>
+      <div class="proof-sep"></div>
+      <div class="proof-stat">
+        <span class="proof-stat-num">47d</span>
+        <span class="proof-stat-label">Avg streak (top 10%)</span>
+      </div>
+      <div class="proof-sep"></div>
+      <div class="proof-stat">
+        <span class="proof-stat-num" style="color:var(--green)">Free</span>
+        <span class="proof-stat-label">To download</span>
+      </div>
+    </div>
+
+    <div class="reviews-grid fade">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"I've tried every fitness app. FitFrame is the only one I've opened every single day for three months. The leaderboard competition is genuinely addictive."</p>
+        <div class="review-author">
+          <div class="review-avi" style="background:rgba(249,115,22,.15);color:var(--orange)">M</div>
+          <div>
+            <div class="review-name">Marcus L.</div>
+            <div class="review-meta">Diamond tier · 91-day streak</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The AI scoring is scary accurate. It spotted that my core was lagging behind weeks before I noticed it myself. Game-changer for actually fixing imbalances."</p>
+        <div class="review-author">
+          <div class="review-avi" style="background:rgba(137,212,245,.12);color:#89D4F5">J</div>
+          <div>
+            <div class="review-name">Jordan K.</div>
+            <div class="review-meta">Elite tier · #12 global</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"My rival system keeps me more motivated than any personal trainer. I will not let @apex_kai stay ahead of me. Best £5 I spend every month, no question."</p>
+        <div class="review-author">
+          <div class="review-avi" style="background:rgba(232,107,245,.12);color:#E86BF5">S</div>
+          <div>
+            <div class="review-name">Sam T.</div>
+            <div class="review-meta">Champion tier · 47-day streak</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-inner">
-    <!-- duplicated for seamless loop -->
-    <div class="ticker-item"><span class="ticker-dot"></span>Upload daily</div>
-    <div class="ticker-item">AI scores every muscle</div>
-    <div class="ticker-item"><span style="color:var(--orange)">+50 XP</span> per upload</div>
-    <div class="ticker-item">Global leaderboards</div>
-    <div class="ticker-item"><span style="color:var(--orange)">+150 XP</span> overtake rival</div>
-    <div class="ticker-item">8 tier ranks</div>
-    <div class="ticker-item">Photos private by default</div>
-    <div class="ticker-item">Split IQ training analyzer</div>
-    <div class="ticker-item">FitFrame Wrapped, monthly</div>
-    <div class="ticker-item"><span style="color:var(--orange)">3-day free trial</span> on Pro</div>
-
-    <div class="ticker-item"><span class="ticker-dot"></span>Upload daily</div>
-    <div class="ticker-item">AI scores every muscle</div>
-    <div class="ticker-item"><span style="color:var(--orange)">+50 XP</span> per upload</div>
-    <div class="ticker-item">Global leaderboards</div>
-    <div class="ticker-item"><span style="color:var(--orange)">+150 XP</span> overtake rival</div>
-    <div class="ticker-item">8 tier ranks</div>
-    <div class="ticker-item">Photos private by default</div>
-    <div class="ticker-item">Split IQ training analyzer</div>
-    <div class="ticker-item">FitFrame Wrapped, monthly</div>
-    <div class="ticker-item"><span style="color:var(--orange)">3-day free trial</span> on Pro</div>
-  </div>
-</div>
 
 <!-- HOW IT WORKS -->
-<section id="loop">
-  <div class="loop-section">
-    <div class="loop-header reveal">
+<section class="how-section">
+  <div class="how-eyebrow fade">How it works</div>
+  <h2 class="how-title fade">Four steps.<br />Every day.</h2>
+  <div class="how-steps">
+    <div class="how-step fade">
+      <div class="how-step-num">01</div>
       <div>
-        <div class="section-kicker">The core loop</div>
-        <h2>Four steps.<br />Every day.</h2>
-      </div>
-      <p>A simple daily ritual that compounds into visible transformation over weeks and months.</p>
-    </div>
-    <div class="steps reveal reveal-d1">
-      <div class="step">
-        <div class="step-num">01</div>
-        <div class="step-icon-wrap"><div class="icon-camera"></div></div>
-        <h3>Upload</h3>
-        <p>Take your daily photo with the in-app camera. Every image is stored privately — only yours unless you choose to share.</p>
-        <span class="step-xp">+50 XP</span>
-      </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <div class="step-icon-wrap"><div class="icon-ai"></div></div>
-        <h3>Get scored</h3>
-        <p>Claude AI analyzes each muscle group and scores your progress relative to your own baseline — never judged against other people's bodies.</p>
-        <span class="step-xp">+25 XP quality</span>
-      </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <div class="step-icon-wrap"><div class="icon-xp"></div></div>
-        <h3>Earn XP</h3>
-        <p>Every upload, streak milestone, and week-on-week improvement earns XP. Level up from Bronze to Olympian through sustained commitment.</p>
-        <span class="step-xp">+100 XP improvement</span>
-      </div>
-      <div class="step">
-        <div class="step-num">04</div>
-        <div class="step-icon-wrap"><div class="icon-trophy"></div></div>
-        <h3>Compete</h3>
-        <p>Climb global, national, and city leaderboards. Set a rival, track your standing, and watch your rank move in real time.</p>
-        <span class="step-xp">+150 XP rival</span>
+        <h3>Snap your daily photo</h3>
+        <p>Open the app, take a photo with the in-app camera. Takes 10 seconds. Every image is stored privately — only visible to you unless you opt into a public profile.</p>
+        <div class="how-xp">+50 XP daily upload</div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- BENTO FEATURES -->
-<section id="features">
-  <div class="features-section">
-    <div class="features-kicker reveal">
-      <div class="section-kicker">Everything inside</div>
-    </div>
-    <div class="bento">
-
-      <!-- Row 1: Leaderboard (7) + Split IQ (5) -->
-      <div class="bento-cell span-7 reveal">
-        <div class="bento-kicker">Compete</div>
-        <div class="bento-title">Global leaderboards with a rival you pick</div>
-        <div class="bento-body">Filter by weekly score, streak, or most improved. Set any player as your rival — their rank vs yours shows on your home screen. Overtake them for 150 XP.</div>
-        <div class="leaderboard-preview">
-          <div class="lb-mini-row">
-            <div class="lb-mini-rank" style="color:var(--gold-t)">1</div>
-            <div class="lb-mini-avi" style="border-color:var(--olympian)">A</div>
-            <div class="lb-mini-name">apex_kai</div>
-            <div class="lb-mini-score">94.2</div>
-            <div class="lb-mini-delta delta-up" style="color:var(--green)"></div>
-          </div>
-          <div class="lb-mini-row me">
-            <div class="lb-mini-rank" style="color:var(--orange)">5</div>
-            <div class="lb-mini-avi" style="border-color:var(--orange)">Y</div>
-            <div class="lb-mini-name" style="font-weight:700">You <span style="font-size:10px;color:var(--orange);margin-left:4px">⚔ rival</span></div>
-            <div class="lb-mini-score">84.1</div>
-            <div class="lb-mini-delta" style="color:var(--green)">↑3</div>
-          </div>
-          <div class="lb-mini-row">
-            <div class="lb-mini-rank">6</div>
-            <div class="lb-mini-avi" style="border-color:var(--border-hi)">J</div>
-            <div class="lb-mini-name">iron_j</div>
-            <div class="lb-mini-score">81.7</div>
-            <div class="lb-mini-delta" style="color:var(--red)">↓1</div>
-          </div>
-        </div>
-        <span class="bento-badge badge-free">✓ Free to view</span>
-        <span class="bento-badge badge-pro" style="margin-left:8px">★ Pro to compete</span>
-      </div>
-
-      <div class="bento-cell span-5 accent reveal reveal-d1">
-        <div class="bento-kicker">Split IQ — Free</div>
-        <div class="bento-title">AI rates your training split out of 10</div>
-        <div class="bento-body">Describe your weekly split. Claude scores it, identifies muscle frequency imbalances, and flags recovery gaps.</div>
-        <div class="split-score-display">
-          <div class="split-num" style="color:var(--orange)">7.4</div>
-          <div class="split-of">/ 10 — PPL · 6 days/week</div>
-          <div class="split-freq-row"><div class="freq-label">Chest</div><div class="freq-pill freq-ok">Optimal</div></div>
-          <div class="split-freq-row"><div class="freq-label">Back</div><div class="freq-pill freq-ok">Optimal</div></div>
-          <div class="split-freq-row"><div class="freq-label">Legs</div><div class="freq-pill freq-lo">Low</div></div>
-          <div class="split-freq-row"><div class="freq-label">Arms</div><div class="freq-pill freq-hi">High</div></div>
-        </div>
-      </div>
-
-      <!-- Row 2: Streak (4) + Wrapped (4) + Then vs Now (4) -->
-      <div class="bento-cell span-4 reveal">
-        <div class="bento-kicker">Consistency</div>
-        <div class="bento-title">Streak tracking + commit graph</div>
-        <div class="bento-body">A GitHub-style 91-day upload grid lives on your profile. Streak milestones unlock massive XP: 200 at 7 days, 500 at 30, 1000 at 100.</div>
-        <div class="commit-grid" id="cg"></div>
-        <span class="bento-badge badge-free">✓ Free</span>
-      </div>
-
-      <div class="bento-cell span-4 reveal reveal-d1">
-        <div class="bento-kicker">Season recap</div>
-        <div class="bento-title">FitFrame Wrapped, every month</div>
-        <div class="bento-body">Your season-in-review — consistency %, peak rank, longest streak, and tier achieved. Auto-opens monthly. One tap to share.</div>
-        <div class="wrapped-card">
-          <div class="wrapped-stat">
-            <span class="wrapped-num" style="color:var(--orange)">84%</span>
-            <div class="wrapped-label">Consistency</div>
-          </div>
-          <div class="wrapped-stat">
-            <span class="wrapped-num" style="color:var(--gold)">#5</span>
-            <div class="wrapped-label">Peak rank</div>
-          </div>
-          <div class="wrapped-stat">
-            <span class="wrapped-num">47</span>
-            <div class="wrapped-label">Best streak</div>
-          </div>
-        </div>
-        <span class="bento-badge badge-free">✓ Free</span>
-      </div>
-
-      <div class="bento-cell span-4 reveal reveal-d2">
-        <div class="bento-kicker">Progress</div>
-        <div class="bento-title">Then vs Now — proof it's working</div>
-        <div class="bento-body">Side-by-side comparison of your first and latest upload with score badges and improvement delta. Tap for a full-screen view.</div>
-        <div style="margin-top:20px;display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center">
-          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center">
-            <div style="font-size:10px;color:var(--muted);margin-bottom:8px">91 DAYS AGO</div>
-            <div style="font-family:var(--font-display);font-weight:900;font-size:28px;color:var(--muted)">54</div>
-          </div>
-          <div style="font-family:var(--font-display);font-weight:900;font-size:20px;color:var(--green)">+24</div>
-          <div style="background:var(--surface);border:1px solid rgba(249,115,22,0.3);border-radius:10px;padding:16px;text-align:center">
-            <div style="font-size:10px;color:var(--muted);margin-bottom:8px">TODAY</div>
-            <div style="font-family:var(--font-display);font-weight:900;font-size:28px;color:var(--orange)">78</div>
-          </div>
-        </div>
-        <span class="bento-badge badge-free">✓ Free</span>
-      </div>
-
-      <!-- Row 3: AI Coach wide -->
-      <div class="bento-cell span-8 accent reveal">
-        <div class="bento-kicker">Powered by Claude AI</div>
-        <div class="bento-title">Per-muscle coaching after every upload</div>
-        <div class="bento-body" style="max-width:500px">Scores each muscle group (arms, chest, back, core, legs) on a 0–100 scale relative to your own baseline. Honest, evidence-based feedback — not flattery. The score breakdown is Pro-only; the core AI scoring powers the leaderboard for everyone.</div>
-        <span class="bento-badge badge-free">✓ AI scoring — Free</span>
-        <span class="bento-badge badge-pro" style="margin-left:8px">★ Coaching detail — Pro</span>
-      </div>
-
-      <div class="bento-cell span-4 reveal reveal-d1">
-        <div class="bento-kicker">Public profiles</div>
-        <div class="bento-title">Share your journey — your call</div>
-        <div class="bento-body">All photos are private by default. Opt in to a public profile and let others see your recent uploads and gallery on the leaderboard.</div>
-        <div style="margin-top:20px;display:flex;align-items:center;gap:10px">
-          <div style="width:36px;height:36px;background:var(--elevated);border-radius:50%;border:2px solid var(--border-hi);flex-shrink:0"></div>
-          <div>
-            <div style="font-size:13px;font-weight:600">you</div>
-            <div style="font-size:11px;color:var(--muted)">Photos hidden from others</div>
-          </div>
-          <div style="margin-left:auto">
-            <div style="width:38px;height:22px;background:var(--elevated);border-radius:99px;border:1px solid var(--border-hi);position:relative;cursor:pointer">
-              <div style="width:16px;height:16px;background:var(--muted);border-radius:50%;position:absolute;top:2px;left:2px"></div>
-            </div>
-          </div>
-        </div>
-        <span class="bento-badge badge-pro" style="margin-top:16px">★ Pro</span>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- XP ECONOMY -->
-<div class="xp-section">
-  <div class="xp-inner">
-    <div class="xp-left reveal">
-      <div class="section-kicker">XP economy</div>
-      <h2>Every rep<br />rewarded.</h2>
-      <p>A logarithmic progression curve keeps early levels exciting and later levels earned. Consistency compounds into tiers.</p>
-      <div class="xp-economy">
-        <div class="xp-row">
-          <div class="xp-action">
-            <div class="xp-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#5A5A5A" stroke-width="1.5"/><circle cx="7" cy="7" r="2.5" fill="#5A5A5A"/></svg>
-            </div>
-            Daily upload
-          </div>
-          <div class="xp-amount">+50 XP</div>
-        </div>
-        <div class="xp-row">
-          <div class="xp-action">
-            <div class="xp-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1.5" stroke="#5A5A5A" stroke-width="1.5"/><path d="M5 3V2M9 3V2" stroke="#5A5A5A" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-            Good quality photo
-          </div>
-          <div class="xp-amount">+25 XP</div>
-        </div>
-        <div class="xp-row">
-          <div class="xp-action">
-            <div class="xp-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 10L5.5 6.5L8 9L12 4" stroke="#5A5A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            Week-on-week improvement
-          </div>
-          <div class="xp-amount">+100 XP</div>
-        </div>
-        <div class="xp-row">
-          <div class="xp-action">
-            <div class="xp-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L8.5 5.5L12 6L9.5 8.5L10 12L7 10.5L4 12L4.5 8.5L2 6L5.5 5.5L7 2Z" stroke="#5A5A5A" stroke-width="1.5" stroke-linejoin="round"/></svg>
-            </div>
-            Daily mission complete
-          </div>
-          <div class="xp-amount">+75 XP</div>
-        </div>
-        <div class="xp-row">
-          <div class="xp-action">
-            <div class="xp-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2C7 2 10 4.5 10 7.5C10 9.5 8.5 11 7 11C5.5 11 4 9.5 4 7.5C4 4.5 7 2 7 2Z" stroke="#5A5A5A" stroke-width="1.5"/></svg>
-            </div>
-            7-day streak
-          </div>
-          <div class="xp-amount milestone">+200 XP</div>
-        </div>
-        <div class="xp-row">
-          <div class="xp-action">
-            <div class="xp-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C7 1 11 4 11 8C11 10.2 9.2 12 7 12C4.8 12 3 10.2 3 8C3 4 7 1 7 1Z" stroke="#5A5A5A" stroke-width="1.5"/></svg>
-            </div>
-            30-day streak
-          </div>
-          <div class="xp-amount milestone">+500 XP</div>
-        </div>
-        <div class="xp-row">
-          <div class="xp-action">
-            <div class="xp-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 10L7 2L11 10H3Z" stroke="#5A5A5A" stroke-width="1.5" stroke-linejoin="round"/></svg>
-            </div>
-            Overtake your rival
-          </div>
-          <div class="xp-amount">+150 XP</div>
-        </div>
+    <div class="how-step fade d1">
+      <div class="how-step-num">02</div>
+      <div>
+        <h3>Get your AI progress score</h3>
+        <p>Claude analyzes each muscle group and scores your progress relative to your own history. You'll see exactly where you're improving and where to focus.</p>
+        <div class="how-xp">+100 XP week-on-week improvement</div>
       </div>
     </div>
-    <div class="xp-right reveal reveal-d1">
-      <div class="level-card">
-        <div class="level-top">
-          <div class="level-big">42</div>
-          <div class="tier-chip">Diamond</div>
-        </div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Level 42 · 8 levels to Platinum</div>
-        <div class="xp-bar-track">
-          <div class="xp-bar-fill"></div>
-        </div>
-        <div class="xp-bar-meta">
-          <span>8,640 XP earned</span>
-          <span>12,000 XP next level</span>
-        </div>
-      </div>
-      <div class="streak-widget">
-        <div class="streak-icon">
-          <svg class="flame-svg" viewBox="0 0 24 28" fill="none">
-            <path d="M12 2C12 2 18 7 18 13C18 17 15.5 20 12 20C8.5 20 6 17 6 13C6 7 12 2 12 2Z" fill="#F97316" opacity="0.9"/>
-            <path d="M12 8C12 8 15 11 15 14.5C15 16.4 13.7 18 12 18C10.3 18 9 16.4 9 14.5C9 11 12 8 12 8Z" fill="#FBBF24"/>
-          </svg>
-        </div>
-        <div>
-          <div class="streak-num-big">47</div>
-          <div class="streak-sub">Day streak · keep going tomorrow</div>
-        </div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px">
-        <div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px">Weekly score trend</div>
-        <div style="display:flex;align-items:flex-end;gap:4px;height:52px">
-          <div style="flex:1;background:var(--elevated);border-radius:3px 3px 0 0;height:40%"></div>
-          <div style="flex:1;background:var(--elevated);border-radius:3px 3px 0 0;height:55%"></div>
-          <div style="flex:1;background:var(--elevated);border-radius:3px 3px 0 0;height:48%"></div>
-          <div style="flex:1;background:var(--elevated);border-radius:3px 3px 0 0;height:60%"></div>
-          <div style="flex:1;background:var(--elevated);border-radius:3px 3px 0 0;height:52%"></div>
-          <div style="flex:1;background:var(--elevated);border-radius:3px 3px 0 0;height:70%"></div>
-          <div style="flex:1;background:var(--orange);border-radius:3px 3px 0 0;height:88%"></div>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:8px">
-          <span>6 weeks ago</span>
-          <span style="color:var(--green)">↑ +8 this week</span>
-        </div>
+    <div class="how-step fade d2">
+      <div class="how-step-num">03</div>
+      <div>
+        <h3>Earn XP, level up your tier</h3>
+        <p>Every upload, streak milestone, and improvement earns XP. Rise from Bronze to Olympian across 8 tiers and 100 levels. The XP never stops stacking.</p>
+        <div class="how-xp">+500 XP 30-day streak milestone</div>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- TIERS -->
-<section id="tiers">
-  <div class="tiers-section">
-    <div class="tiers-layout">
-      <div class="tiers-left reveal">
-        <div class="section-kicker">Rank system</div>
-        <h2>Eight<br />tiers.<br />One goal.</h2>
-        <p>Tiers are earned through level — a function of consistency, not genetics. Bronze to Olympian in 100 levels.</p>
-        <div class="tiers-formula">
-          <div class="formula-label">Rank progress formula</div>
-          <div class="formula-row">
-            <div class="formula-pct">50%</div>
-            <div class="formula-desc">Level position within tier</div>
-          </div>
-          <div class="formula-row">
-            <div class="formula-pct">30%</div>
-            <div class="formula-desc">Streak (capped at 30 days)</div>
-          </div>
-          <div class="formula-row" style="margin-bottom:0">
-            <div class="formula-pct">20%</div>
-            <div class="formula-desc">Total uploads (capped at 200)</div>
-          </div>
-        </div>
-      </div>
-      <div class="tiers-right reveal reveal-d1">
-        <div class="tier-row" style="border-color:rgba(216,90,48,0.2)">
-          <div class="tier-dot" style="background:var(--bronze)"></div>
-          <div class="tier-name-text" style="color:var(--bronze)">Bronze</div>
-          <div class="tier-levels">Levels 1–9</div>
-          <div class="tier-bar-track"><div class="tier-bar-fill" style="width:9%;background:var(--bronze)"></div></div>
-        </div>
-        <div class="tier-row" style="border-color:rgba(180,178,169,0.2)">
-          <div class="tier-dot" style="background:var(--silver)"></div>
-          <div class="tier-name-text" style="color:var(--silver)">Silver</div>
-          <div class="tier-levels">Levels 10–19</div>
-          <div class="tier-bar-track"><div class="tier-bar-fill" style="width:19%;background:var(--silver)"></div></div>
-        </div>
-        <div class="tier-row" style="border-color:rgba(239,159,39,0.2)">
-          <div class="tier-dot" style="background:var(--gold-t)"></div>
-          <div class="tier-name-text" style="color:var(--gold-t)">Gold</div>
-          <div class="tier-levels">Levels 20–29</div>
-          <div class="tier-bar-track"><div class="tier-bar-fill" style="width:29%;background:var(--gold-t)"></div></div>
-        </div>
-        <div class="tier-row" style="border-color:rgba(212,208,200,0.15)">
-          <div class="tier-dot" style="background:var(--platinum)"></div>
-          <div class="tier-name-text" style="color:var(--platinum)">Platinum</div>
-          <div class="tier-levels">Levels 30–39</div>
-          <div class="tier-bar-track"><div class="tier-bar-fill" style="width:39%;background:var(--platinum)"></div></div>
-        </div>
-        <div class="tier-row" style="border-color:rgba(137,212,245,0.2)">
-          <div class="tier-dot" style="background:var(--diamond)"></div>
-          <div class="tier-name-text" style="color:var(--diamond)">Diamond</div>
-          <div class="tier-levels">Levels 40–49</div>
-          <div class="tier-bar-track"><div class="tier-bar-fill" style="width:49%;background:var(--diamond)"></div></div>
-        </div>
-        <div class="tier-row" style="border-color:rgba(139,92,246,0.2)">
-          <div class="tier-dot" style="background:var(--elite)"></div>
-          <div class="tier-name-text" style="color:var(--elite)">Elite</div>
-          <div class="tier-levels">Levels 50–59</div>
-          <div class="tier-bar-track"><div class="tier-bar-fill" style="width:59%;background:var(--elite)"></div></div>
-        </div>
-        <div class="tier-row" style="border-color:rgba(232,107,245,0.2)">
-          <div class="tier-dot" style="background:var(--champion)"></div>
-          <div class="tier-name-text" style="color:var(--champion)">Champion</div>
-          <div class="tier-levels">Levels 60–74</div>
-          <div class="tier-bar-track"><div class="tier-bar-fill" style="width:74%;background:var(--champion)"></div></div>
-        </div>
-        <div class="tier-row" style="border-color:rgba(255,229,102,0.2)">
-          <div class="tier-dot" style="background:var(--olympian)"></div>
-          <div class="tier-name-text" style="color:var(--olympian)">Olympian</div>
-          <div class="tier-levels">Levels 75–100</div>
-          <div class="tier-bar-track"><div class="tier-bar-fill" style="width:100%;background:var(--olympian)"></div></div>
-        </div>
+    <div class="how-step fade d3">
+      <div class="how-step-num">04</div>
+      <div>
+        <h3>Compete on the leaderboard</h3>
+        <p>Climb global, national, and city boards. Pick a rival and track them daily. When you overtake them, you'll know about it. So will they.</p>
+        <div class="how-xp">+150 XP rival overtaken</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- PRICING -->
-<section id="pricing">
-  <div class="pricing-section">
-    <div class="pricing-inner">
-      <div class="pricing-header reveal">
-        <div>
-          <div class="section-kicker">Pricing</div>
-          <h2>Start free.<br />Go Pro<br />when ready.</h2>
-        </div>
-        <p>All core tracking is free, forever. Pro unlocks the competitive layer — leaderboard participation, rival system, and detailed AI coaching.</p>
+<section class="plan-section" id="pricing">
+  <div class="plan-inner">
+    <div class="plan-eyebrow fade">Pricing</div>
+    <h2 class="plan-title fade">Start free.<br />Compete with Pro.</h2>
+    <div class="plans fade">
+      <div class="plan-card">
+        <div class="plan-label">Free</div>
+        <div class="plan-price">$0</div>
+        <div class="plan-period">Forever free · no card needed</div>
+        <ul class="plan-feats">
+          <li class="on"><div class="ft-chk ft-on">✓</div>Daily uploads + AI scoring</li>
+          <li class="on"><div class="ft-chk ft-on">✓</div>View global leaderboards</li>
+          <li class="on"><div class="ft-chk ft-on">✓</div>Streak tracking + commit graph</li>
+          <li class="on"><div class="ft-chk ft-on">✓</div>Split IQ training analyzer</li>
+          <li class="on"><div class="ft-chk ft-on">✓</div>Then vs Now comparison</li>
+          <li class="on"><div class="ft-chk ft-on">✓</div>FitFrame Wrapped (monthly)</li>
+          <li class="off"><div class="ft-chk ft-off">✗</div>Compete on leaderboards</li>
+          <li class="off"><div class="ft-chk ft-off">✗</div>Rival system</li>
+          <li class="off"><div class="ft-chk ft-off">✗</div>Detailed AI coaching breakdown</li>
+        </ul>
+        <a class="plan-cta cta-border" href="#">Download free</a>
       </div>
-
-      <div class="pricing-toggle reveal">
-        <div class="toggle-opt active" id="t-mo" onclick="setToggle('mo')">Monthly</div>
-        <div class="toggle-opt" id="t-yr" onclick="setToggle('yr')">Annual <span class="save-pill">Save $60</span></div>
-      </div>
-
-      <div class="plans reveal reveal-d1">
-        <div class="plan">
-          <div class="plan-name">Free</div>
-          <div class="plan-price-row">
-            <div class="plan-dollar">$</div>
-            <div class="plan-amount">0</div>
-          </div>
-          <div class="plan-note">Free forever · no card required</div>
-          <div class="plan-divider"></div>
-          <ul class="plan-feats">
-            <li class="on"><div class="feat-check">✓</div>Daily uploads + AI progress scoring</li>
-            <li class="on"><div class="feat-check">✓</div>View global leaderboards</li>
-            <li class="on"><div class="feat-check">✓</div>Streak tracking + commit graph</li>
-            <li class="on"><div class="feat-check">✓</div>FitFrame Wrapped (monthly auto)</li>
-            <li class="on"><div class="feat-check">✓</div>Split IQ training analyzer</li>
-            <li class="on"><div class="feat-check">✓</div>Then vs Now comparison</li>
-            <li class="off"><div class="feat-x">✗</div>Compete on leaderboards</li>
-            <li class="off"><div class="feat-x">✗</div>Rival system</li>
-            <li class="off"><div class="feat-x">✗</div>AI coaching breakdown</li>
-            <li class="off"><div class="feat-x">✗</div>Public physique posting</li>
-          </ul>
-          <a class="plan-cta cta-outline" href="#">Download free</a>
-        </div>
-
-        <div class="plan featured">
-          <div class="plan-top-badge">3-day free trial</div>
-          <div class="plan-name">Pro</div>
-          <div class="plan-price-row">
-            <div class="plan-dollar">$</div>
-            <div class="plan-amount" id="price-amt">5</div>
-            <div class="plan-per" id="price-per">/mo</div>
-          </div>
-          <div class="plan-note" id="price-note">$59.99 billed annually · save $60/yr</div>
-          <div class="plan-divider"></div>
-          <ul class="plan-feats">
-            <li class="on"><div class="feat-check">✓</div>Everything in Free</li>
-            <li class="on"><div class="feat-check">✓</div>Compete on all leaderboards</li>
-            <li class="on"><div class="feat-check">✓</div>Rival system + home-screen tracking</li>
-            <li class="on"><div class="feat-check">✓</div>Detailed AI muscle coaching</li>
-            <li class="on"><div class="feat-check">✓</div>Public physique posting</li>
-            <li class="on"><div class="feat-check">✓</div>Rising · Streak · Most Improved boards</li>
-            <li class="on"><div class="feat-check">✓</div>City + Country scoped boards</li>
-          </ul>
-          <a class="plan-cta cta-orange" href="#">Start 3-day free trial</a>
-        </div>
-      </div>
-      <p style="text-align:center;font-size:13px;color:var(--muted);margin-top:20px">Cancel anytime. Subscription renews automatically. By subscribing you agree to our Terms of Use and Privacy Policy.</p>
-    </div>
-  </div>
-</section>
-
-<!-- SAFETY -->
-<section>
-  <div class="safety-section">
-    <div class="reveal">
-      <div class="section-kicker">Built responsibly</div>
-      <h2 style="font-family:var(--font-display);font-weight:900;font-size:clamp(48px,5vw,72px);line-height:0.92;letter-spacing:-1px">Non-negotiable<br />safety rules.</h2>
-    </div>
-    <div class="safety-grid">
-      <div class="safety-card reveal">
-        <div class="safety-icon-block">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="#5A5A5A" stroke-width="1.5"/><path d="M6 9L8 11L12 7" stroke="#5A5A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <h4>No weight or BMI</h4>
-        <p>We never ask for, display, or track weight, BMI, or calorie data anywhere in the app. Not optional — not configurable.</p>
-      </div>
-      <div class="safety-card reveal reveal-d1">
-        <div class="safety-icon-block">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L3 5.5V10C3 13.5 5.7 16.7 9 17C12.3 16.7 15 13.5 15 10V5.5L9 2Z" stroke="#5A5A5A" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        </div>
-        <h4>Relative scoring only</h4>
-        <p>Your progress score reflects your own history — not a comparison to other bodies. Leaderboards show score, not photos.</p>
-      </div>
-      <div class="safety-card reveal reveal-d2">
-        <div class="safety-icon-block">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="8" width="12" height="8" rx="1.5" stroke="#5A5A5A" stroke-width="1.5"/><path d="M6 8V6C6 4.3 7.3 3 9 3C10.7 3 12 4.3 12 6V8" stroke="#5A5A5A" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </div>
-        <h4>Private by default</h4>
-        <p>Every upload is stored privately. Public sharing requires an explicit opt-in. Revocable at any time in settings.</p>
-      </div>
-      <div class="safety-card reveal reveal-d3">
-        <div class="safety-icon-block">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L11 7H16L12 10.5L13.5 16L9 13L4.5 16L6 10.5L2 7H7L9 2Z" stroke="#5A5A5A" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        </div>
-        <h4>Content moderation</h4>
-        <p>Public posts can be reported with one tap. Reason picker covers inappropriate, fake, or spam. Reports go to a review queue.</p>
+      <div class="plan-card pro">
+        <div class="pro-badge">3-day free trial</div>
+        <div class="plan-label">Pro</div>
+        <div class="plan-price">$5<span style="font-size:22px;font-weight:600">/mo</span></div>
+        <div class="plan-period">$59.99/yr · save $60 · cancel anytime</div>
+        <ul class="plan-feats">
+          <li class="on"><div class="ft-chk ft-on">✓</div>Everything in Free</li>
+          <li class="on"><div class="ft-chk ft-on">✓</div>Compete on all leaderboards</li>
+          <li class="on"><div class="ft-chk ft-on">✓</div>Rival system + daily tracking</li>
+          <li class="on"><div class="ft-chk ft-on">✓</div>Detailed AI muscle coaching</li>
+          <li class="on"><div class="ft-chk ft-on">✓</div>Public physique profile</li>
+          <li class="on"><div class="ft-chk ft-on">✓</div>Rising · Streak · Top Improved boards</li>
+          <li class="on"><div class="ft-chk ft-on">✓</div>City + Country leaderboards</li>
+        </ul>
+        <a class="plan-cta cta-fill" href="#">Start 3-day free trial</a>
+        <div class="plan-trial">No charge for 3 days. Cancel in-app anytime.</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FINAL CTA -->
-<div class="final-cta">
-  <div class="final-cta-inner reveal">
-    <h2>Your streak<br />starts <em>today.</em></h2>
-    <p>One upload. That's all it takes to begin. Free to download — no card required.</p>
-    <div class="store-row">
-      <a class="store-btn" href="#">
-        <div class="store-icon-wrap"><div class="apple-shape"></div></div>
+<section class="final">
+  <div class="final-glow"></div>
+  <div class="final-inner">
+    <h2 class="fade">One upload.<br /><em>Starts now.</em></h2>
+    <p class="fade d1">Free to download. Takes 30 seconds to set up. Your streak starts the moment you take your first photo.</p>
+    <div class="final-dl fade d2">
+      <a class="dl-btn" href="#">
+        <svg class="dl-icon" viewBox="0 0 28 28" fill="none">
+          <path d="M19.5 15.2C19.5 12.8 20.9 11.5 20.9 11.5C20.9 11.5 19.6 9.5 17.2 9.5C15.2 9.5 14.3 10.8 13.1 10.8C11.9 10.8 10.8 9.5 9 9.5C6.6 9.5 4 11.8 4 15.5C4 18.8 6.2 23.5 8.5 23.5C9.8 23.5 10.7 22.5 12.2 22.5C13.6 22.5 14.4 23.5 15.9 23.5C18.3 23.5 20.5 19 21 17C21 17 19.5 16.2 19.5 15.2Z" fill="#111"/>
+          <path d="M16.5 5.5C17.2 4.6 17.5 3.5 17.3 2.5C16.3 2.6 15.1 3.2 14.3 4.2C13.6 5 13.2 6.1 13.4 7C14.5 7.1 15.7 6.5 16.5 5.5Z" fill="#111"/>
+        </svg>
         <div>
-          <span class="store-label-sub">Download on the</span>
-          <span class="store-label-name">App Store</span>
+          <span class="dl-text-small">Download on the</span>
+          <span class="dl-text-big">App Store</span>
         </div>
       </a>
-      <a class="store-btn" href="#">
-        <div class="store-icon-wrap"><div class="play-shape"></div></div>
+      <a class="dl-btn dark" href="#">
+        <svg class="dl-icon" viewBox="0 0 28 28" fill="none">
+          <path d="M6 5.5C5 5 4 5.8 4 7V21C4 22.2 5 23 6 22.5L22 14L6 5.5Z" fill="#F0F0F0" fill-opacity=".2"/>
+          <path d="M6 5.5L22 14L6 22.5" stroke="#F0F0F0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
         <div>
-          <span class="store-label-sub">Get it on</span>
-          <span class="store-label-name">Google Play</span>
+          <span class="dl-text-small">Get it on</span>
+          <span class="dl-text-big">Google Play</span>
         </div>
       </a>
     </div>
+    <p class="final-note fade d3"><span>Free to start</span> · No credit card · Pro from $5/mo</p>
   </div>
-</div>
+</section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-grid">
+  <div class="footer-inner">
     <div>
       <a class="logo" href="#" style="text-decoration:none">
         <div class="logo-mark">FF</div>
-        <span class="logo-text">FitFrame</span>
+        <span class="logo-name">FitFrame</span>
       </a>
-      <p class="footer-brand-desc">Gamified physique tracking. Upload daily, get scored by AI, earn XP, and compete on global leaderboards.</p>
+      <p class="footer-brand-sub">Gamified physique tracking. Upload daily, get AI-scored, earn XP, and compete globally.</p>
     </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Product</div>
-      <ul>
-        <li><a href="#loop">How it works</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#tiers">Tier system</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Legal</div>
-      <ul>
-        <li><a href="#">Terms of Use</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">EULA</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Support</div>
-      <ul>
-        <li><a href="mailto:support@fitframe.app">support@fitframe.app</a></li>
-        <li><a href="#">Report an issue</a></li>
-        <li><a href="#">Delete account</a></li>
-      </ul>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h5>App</h5>
+        <ul>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#download">Download</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">EULA</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <ul>
+          <li><a href="mailto:support@fitframe.app">support@fitframe.app</a></li>
+          <li><a href="#">Report an issue</a></li>
+          <li><a href="#">Delete account</a></li>
+        </ul>
+      </div>
     </div>
   </div>
   <div class="footer-bottom">
     <span>© 2026 FitFrame. All rights reserved.</span>
-    <span>Built with Claude AI · Supabase · RevenueCat</span>
+    <span>Powered by Claude AI · Supabase · RevenueCat</span>
   </div>
 </footer>
 
 <script>
   // Scroll reveal
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-  // Commit graph
-  const cg = document.getElementById('cg');
-  if (cg) {
-    for (let i = 0; i < 91; i++) {
-      const cell = document.createElement('div');
-      cell.className = 'cg-cell';
-      const rnd = Math.random();
-      if (rnd > 0.25) {
-        const lv = rnd > 0.85 ? '#F97316' : rnd > 0.6 ? '#EA6D0E55' : rnd > 0.4 ? '#F9731633' : '#F9731618';
-        cell.style.background = lv;
-      }
-      cg.appendChild(cell);
-    }
-  }
-
-  // Pricing toggle
-  function setToggle(mode) {
-    document.getElementById('t-mo').classList.toggle('active', mode === 'mo');
-    document.getElementById('t-yr').classList.toggle('active', mode === 'yr');
-    const amt  = document.getElementById('price-amt');
-    const per  = document.getElementById('price-per');
-    const note = document.getElementById('price-note');
-    if (mode === 'yr') {
-      amt.textContent  = '5';
-      per.textContent  = '/mo';
-      note.textContent = '$59.99 billed annually · save $60/yr';
-    } else {
-      amt.textContent  = '9.99';
-      per.textContent  = '/mo';
-      note.textContent = 'Billed monthly · cancel anytime';
-    }
-  }
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade').forEach(el => io.observe(el));
 </script>
 </body>
 </html>
